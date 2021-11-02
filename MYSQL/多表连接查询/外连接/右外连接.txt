@@ -1,0 +1,9 @@
+1.在学生成绩管理数据库cjgl中,查找被选修了的课程情况和所有开设的课程名。
+use cjgl
+go
+select cj. *,课程名 from cj right join kc on cj.课程号=kc.课程号
+
+
+
+select cj.*,课程名 from cj join 
+kc on cj.课程号=kc.课程号;

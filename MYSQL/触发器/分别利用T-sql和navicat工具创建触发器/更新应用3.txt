@@ -1,0 +1,13 @@
+在表cj上定义1个UPDATE触发程序，用于检查更新每一行时，成绩位于0～100的范围内，否则回退。
+
+解：mysql> delimiter //
+mysql> CREATE TRIGGER upd_check BEFORE UPDATE ON cj
+ ->FOR EACH ROW
+ ->BEGIN
+ ->     IF NEW.成绩 < 0 or NEW.成绩 >100  THEN
+ ->      Set NEW.成绩=OLD.成绩;
+ ->     END IF;
+ ->END;//
+mysql> delimiter ;
+调用触发器：
+Mysql>update cj set 成绩=110 where 学号='001101' and 课程号='206';

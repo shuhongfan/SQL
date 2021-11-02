@@ -1,0 +1,4 @@
+要求：把计算机基础课的成绩加5分。
+
+
+update cj set 成绩=成绩+5 where 课程号 in(select 课程号 from kc where 课程名='计算机基础');

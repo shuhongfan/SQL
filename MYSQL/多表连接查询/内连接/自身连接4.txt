@@ -1,0 +1,17 @@
+1.在学生成绩管理数据库cjgl中，查找选修了两门以上课程的学生学号和课程号。（必须为表取两个别名）
+use cjgl 
+go
+select  distinct  a.学号 ,b.课程号
+from cj as a ,cj as b  where a .学号 =b .学号  and a.课程号!=b.课程号
+
+
+use cjgl 
+go
+select  distinct  a.学号 ,b.课程号
+from cj as a inner  join cj as b on a .学号 =b .学号  and a.课程号!=b.课程号
+
+select 学号,count(课程号) as 门数 from cj  group by 学号 having COUNT(*)>=2
+
+2.查询同时选修了课程号为101和206的学生学号。
+select  a.学号 
+from cj as a ,cj as b  where a .学号 =b .学号  and a.课程号='101' and b.课程号='206'

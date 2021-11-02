@@ -1,0 +1,17 @@
+创建触发器，要求当在课程表kc中修改某门课学分时，
+自动更新学生表中的总学分。
+ create trigger update_kc
+   after update on kc for each row 
+
+ update xs
+set 总学分=(select sum(学分) from cj,kc where cj.课程号=kc.课程号 and 成绩>=60  and cj.学号=xs.学号 group by 学号);
+
+
+
+CREATE TRIGGER ins_check5 BEFORE UPDATE on xs
+for each ROW
+BEGIN
+IF new.专业名!=old.专业名 THEN
+SET new.专业名=old.专业名;
+END IF;
+END

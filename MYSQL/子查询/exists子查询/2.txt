@@ -1,0 +1,2 @@
+在学生成绩管理数据库cjgl中，查找李明的学生。如果有，则提示“找到了！”，否则提示“没找到！”。
+select if(EXISTS(select * from  xs where 姓名='李伟') ,'找到了','没找到') as 结果      

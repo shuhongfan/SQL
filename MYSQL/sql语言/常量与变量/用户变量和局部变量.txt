@@ -1,0 +1,35 @@
+一、用户变量与连接有关，也就是说，一个客户端定义的变量不能被其他客户端看到或使用。
+当客户端退出时，该客户端连接的所有变量将自动释放。
+ 
+定义和初始化一个用户变量可以用set 或 select 语句。
+
+1.创建一个用户变量name并赋值。
+  set @name='李明';
+ 或 set @name:='李明';
+或 select @name:='李明';
+
+2.使用查询结果给变量赋值
+   use cjgl;
+   set @name =(select 姓名 from xs where 学号='001109');# @name在当前新建查询中有效
+
+3.查询xs表中姓名为@name值的学生信息。
+   select * from xs where 姓名=@name;
+
+二、局部变量的作用范围是在begin ...end 语句块中。可以用declare语句进行定义，不用@符号。
+    局部变量与begin ...end 语句块、流程控制语句只能用于函数、存储过程、触发器和事务的定义中。
+
+    1.编写一个自定义函数score_avg，查询出某个专业的学生平均成绩。
+     函数定义：
+      CREATE FUNCTION score_avg(zym varchar(20))
+       RETURNS DECIMAL(3,1)
+         begin
+	declare x DECIMAL(3,1); # x是局部变量
+	 set x =(Select avg(成绩)
+	from xs  join cj
+	on xs.学号=cj.学号
+	where 专业名=zym) ;
+	return x ;
+      End
+    
+   函数调用：select score_avg('软件技术');
+

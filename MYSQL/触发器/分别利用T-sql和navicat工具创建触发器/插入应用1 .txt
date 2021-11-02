@@ -1,0 +1,43 @@
+ 1.在xs表上定义1个insert触发器，当向xs表中插入一行学生信息时，同时还需要更新专业人数统计表zyrs中的‘人数’列，
+假定专业人数统计表zyrs包括专业编号、专业名和人数3列。
+
+ create table zyrs
+ (专业编号 char(2) primary key,
+专业名 varchar(20) not null,
+ 人数 int null);
+
+insert into zyrs values('01','软件技术',null),
+                    ('02','信息管理',null),
+                    ('03','网络技术',null),
+                    ('04','建筑智能',null)
+
+create trigger ins_xs
+after insert on xs 
+for each row 
+UPDATE zyrs set 人数=(select  count(专业名) from xs   where zyrs.专业名=xs.专业名  GROUP BY 专业名 );
+
+--UPDATE zyrs set 人数=(select  count(专业名) from xs   where xs.专业名=new.专业名  )
+where zyrs.专业名=new.专业名
+
+
+--测试 比较插入前后专业人数
+insert into xs values('001605','刘一波','信息管理','女','1990-12-3',null,null);
+
+2.下述语句将创建1个表和1个INSERT触发程序。触发程序将插入表中某一列的值加在一起：
+
+CREATE TABLE account (acct_num INT PRIMARY key auto_increment, amount DECIMAL(10,2));
+
+CREATE TRIGGER ins_sum after INSERT ON account
+FOR EACH ROW SET @sum = @sum + NEW.amount;
+
+要测试触发器的执行情况，可以运行如下代码：
+set @sum=0;
+insert into account ( amount) values   (95.41);
+insert into account ( amount ) values(100.22);
+insert into account( amount) values(5.27);
+select @sum; 
+
+3.查看、删除触发器
+  （1）利用show triggers语句查看
+  （2）在triggers表中查看触发器的相关信息
+   （3）分别利用navicat 工具和sql语句删除触发器

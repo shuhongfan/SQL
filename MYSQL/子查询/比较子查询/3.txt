@@ -1,0 +1,7 @@
+一、查询其它专业中比软件技术专业某一学生年龄小的学生。
+   select 学号,姓名 from xs where 专业名<>'软件技术' and  year(CURDATE())-year(出生时间)<any  ( select year(CURDATE())-year(出生时间) from xs WHERE 专业名='软件技术')
+
+
+二、在学生成绩管理数据库cjgl中,查找课程号为206的成绩大于或等于课程号为101的最低成绩的学生的学号。
+
+select 学号  from cj   where 课程号='206' and 成绩 >= any (select 成绩  from cj  where 课程号 ='101')

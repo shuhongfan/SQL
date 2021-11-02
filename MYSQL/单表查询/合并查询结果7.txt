@@ -1,0 +1,24 @@
+
+1.在学生成绩管理数据库cjgl中，查询软件技术专业和网络技术专业学生的姓名，不包括重复的行。
+  select 姓名 from xs where 专业名 ='软件技术' union (all ）
+  select 姓名 from xs where 专业名 ='网络技术'
+  
+2.在学生成绩管理数据库cjgl中，新建两个表：软件技术专业学生表rjxs、网络技术专业学生表wlxs,分别存储两个专业的学生情况，表结构与学生表xs相同，将这两表的数据合并到newxs表中。
+  insert into aa   --(aa表事前应存在）
+  select * from rjxs
+    union all
+    select * from wlxs;
+
+create table rjxs select * from xs where 专业名='软件技术';
+create table wlxs select * from xs where 专业名='网络技术';
+create table newxs select * from wlxs union all select * from rjxs;
+
+
+select * from xs , kc;
+select * from xs cross join kc;
+select xs.学号,姓名,课程号,成绩 from xs join cj on xs.学号=cj.学号;
+select xs.学号,姓名,课程号,成绩 from xs,cj where xs.学号=cj.学号
+
+select xs.学号,姓名,课程名,成绩 from xs,cj,kc where
+ xs.学号=cj.学号 and cj.课程号=kc.课程号; 
+    

@@ -1,0 +1,8 @@
+1.在学生成绩管理数据库cjgl中,将软件技术专业的学生按出生时间降序排序，出生时间相同的学生按学号升序排序。（desc表示降序，asc表示升序）
+
+select * from xs where 专业名='软件技术' order by 出生日期 desc,学号 asc;
+
+2.在学生成绩管理数据库cjgl中，在成绩表cj中查询出课程号为'206'的成绩记录并按高分到低分排列。
+
+select * from cj where 课程号=206 order by 成绩 desc;
+select * from cj where 课程号=206 order by 成绩 asc;

@@ -1,0 +1,8 @@
+创建触发器update_xh,要求当在学生表xs中修改学号时，相应地修改成绩表中对应的学号。(注：不能有外键关系）
+create TRIGGER update_xh
+  after UPDATE on xs for each ROW
+BEGIN
+ if new.学号 !=old.学号 THEN
+  UPDATE cj set 学号=new.学号  where 学号=old.学号;
+ end if;
+end 

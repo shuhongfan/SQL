@@ -1,0 +1,13 @@
+请分别用from子句连接查询和ANSI查询实现以下查询：
+  在学生成绩管理数据库cjgl中,查找学号、姓名、选修的课程名及成绩。
+use cjgl
+go
+select xs.学号,姓名,课程名,成绩 from xs,cj,kc 
+where xs.学号 =cj.学号 and cj.课程号=kc.课程号
+
+use cjgl
+go
+select xs.学号,姓名,课程名,成绩 from xs join cj on xs.学号 =cj.学号 join kc 
+on cj.课程号=kc.课程号
+
+select cj.学号,姓名,sum(成绩) as 总分,avg(成绩) as 平均分 from cj,xs where xs.学号 =cj.学号 group by 学号;

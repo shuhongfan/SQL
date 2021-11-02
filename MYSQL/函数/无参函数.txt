@@ -1,0 +1,36 @@
+1.编写一个用户自定义函数season，判断当前时间是一年中的什么季节。
+
+函数定义：
+create function season()
+ returns varchar(20)
+ begin 
+ declare t1 int;
+  declare t2 varchar(20);
+  set t1=month(curdate());
+  if t1=12 or t1=1 or t1=2 then
+    set t2='冬天';
+     elseif t1>=3 and t1<=5 then
+        set t2='春天';
+        elseif t1>=6 and t1<=8 then
+           set t2='夏天';
+           else 
+             set t2='秋天';
+   end if;
+   return t2;
+   end  
+ 
+函数调用：
+select season();
+
+2.编写一个用户自定义函数,返回课程总数。
+ 函数定义：
+create function kczs()
+ returns tinyint
+  begin 
+   declare n tinyint;
+  set n=(select count(*) from kc) ;
+  return  n ;
+  end
+
+函数调用：
+select kczs();

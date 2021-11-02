@@ -1,0 +1,39 @@
+1.编写转账业务的存储过程，要求bank 表中的currentmoney字段值不能小于1。
+create table bank
+(customername varchar(10),currentmoney decimal(10,2));
+insert into bank VALUES('张三',1000);
+insert into bank VALUES('李四',1);
+select * from bank;
+
+
+create procedure banktrans( )
+BEGIN
+declare m decimal(10,2) default 0.0 ;
+ start TRANSACTION;
+ UPDATE bank set currentmoney=currentmoney-1000 where customername='张三';
+UPDATE bank set currentmoney=currentmoney+1000 where customername='李四';
+select currentmoney into m from bank where  customername='张三';
+if m<1 THEN
+ begin
+select '交易失败，回滚事务'  as '提示';
+ROLLBACK;
+ end;
+ELSE
+ BEGIN
+ select '交易成功，提交事务，写入硬盘，永久保存'  as '提示';
+COMMIT;
+end;
+end if;
+end;
+ 
+2.编写给每门课加1学分的存储过程，一旦总学分达到50分以上，撤销本次操作。
+create procedure  addxf ( )
+ begin
+start TRANSACTION;
+ UPDATE kc  SET 学分= 学分+1;
+if ( SELECT sum(学分) FROM kc ) > 50 THEN      
+      ROLLBACK;  
+else     
+       commit;    
+end if;
+end;

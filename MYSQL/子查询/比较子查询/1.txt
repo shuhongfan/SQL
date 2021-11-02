@@ -1,0 +1,3 @@
+查询与王元同一个专业的学生学号、姓名。
+
+select 学号,姓名 from xs where 专业名 =(select 专业名 from xs where 姓名='王元')

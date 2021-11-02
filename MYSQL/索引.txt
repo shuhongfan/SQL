@@ -1,0 +1,28 @@
+﻿分别用navicat工具和命令行方式在cjgl数据库中完成如下操作：
+
+一.在创建表时创建索引(为'name'设置普通索引）
+    create table aaa
+  (id int not null primary key,
+   name varchar(10) null ,
+   index xm_index(name)   );
+
+show index from aaa;
+
+二.在现存表中创建索表
+   
+  1.为xs表‘姓名’列创建一个名为xm_index的普通索引
+    create   index xm_index on xs (姓名) 或  alter table xs add index xm_index (姓名)
+  
+  2. 为kc表‘课程名’列创建一个名为kcm_index的唯一索引，索引排列顺序为降序。
+
+     create  unique index kcm_index on kc (课程名 desc) 
+  
+  3.为cj表‘学号'和‘课程号’列创建一个名为sc_index的普通索引，索引排列顺序为升序。
+     create  index sc_index on cj (学号,课程号  asc )  
+
+三、查看以上已建索引
+      show index from xs 
+
+四、删除以上已建索引
+     alter table xs drop index xm_index 或
+     drop index kcm_index on kc

@@ -1,0 +1,20 @@
+ 1.在表cj上定义1个insert触发程序，用于检查插入每一行时，成绩是否位于0～100的范围内。
+CREATE TRIGGER ins_check before  insert ON cj
+ FOR EACH ROW
+ BEGIN
+   IF NEW.成绩 < 0 or NEW.成绩 >100  THEN
+   Set new.成绩=null;
+    END IF;
+ END;
+
+
+
+
+2.为cj表创建一个触发器cj_xs_insert ,当向cj表插入学号时，必须保证插入的学号有效地存在于xs表中，如果插入的学号在xs表不存在，则插入撤销。
+
+ create trigger cj_xs_insert
+   before  insert  on cj for each row 
+ if not EXISTS(select * from xs where 学号=new. 学号) THEN
+   set new. 学号=null;
+ end if;
+ 

@@ -1,0 +1,51 @@
+分别用navicat工具和命令行方式在cjgl数据库中完成如下操作：
+一、创建视图
+1.在学生成绩管理数据库cjgl中，由学生表xs创建软件技术专业学生的视图view_software.
+  use cjgl
+
+create view view_software
+ as 
+ select * from xs
+ where 专业名='软件技术'
+
+2.在学生成绩管理数据库cjgl中,创建学生选修“计算机基础”课程的成绩视图view_scores.
+ create view view_scores
+ as 
+ select xs.学号,姓名,课程名,成绩 from xs inner join cj on xs.学号=cj.学号 inner join kc  on cj.课程号=kc.课程号
+ where 课程名='计算机基础'
+
+二、修改视图
+1.在学生成绩管理数据库cjgl中，将视图view_software修改为11级软件技术专业学生的视图。
+  alter view view_software
+as
+select * from xs
+ where 专业名='软件技术' and SUBSTRING(xs.学号,3,2)='11'
+
+2.在学生成绩管理数据库cjgl中，将视图view_scores修改为学生选修“高等数学”课程的成绩视图。
+  alter view view_scores
+as
+ select xs.学号,姓名,课程名,成绩 from xs inner join cj on xs.学号=cj.学号 inner join kc  on cj.课程号=kc.课程号
+ where 课程名='高等数学'
+
+
+三、应用视图
+1）查询数据
+  从视图view_scores中查询学生选修“高等数学”课程的成绩等信息。
+  select * from view_scores
+2）添加数据行
+  在学生成绩管理数据库cjgl中，通过11级软件技术专业学生的视图view_software添加学生“王玲玲”的信息。
+  insert into view_software (学号,姓名,性别,出生日期,专业名,总学分,备注)
+   values('001166','王玲玲','女','2001-12-8','软件技术',null,null)
+ 
+3）更新数据
+  通过视图view_scores更新学生“王金华”选修“计算机基础”课程的分数为60分。
+  update view_scores 
+set 成绩=60
+where 姓名='王金华'
+4）删除数据行
+  在学生成绩管理数据库cjgl中，通过11级软件技术专业学生的视图view_software，删除学生王玲玲的信息。
+  delete  from view_software
+   where 姓名='王玲玲'
+四、删除视图
+   在学生成绩管理数据库cjgl中，删除视图view_software。
+ drop view view_software

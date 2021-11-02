@@ -1,0 +1,14 @@
+通过触发器同步更新成绩信息。创建触发器tr_del,
+从学生表中删除数据时，相应地从成绩表中删除数据。(注：不能有外键关系）
+ use cjgl
+
+create trigger tr_del
+   after delete  on xs for each row
+  
+ delete from cj where 学号 =old.学号;
+  
+--测试
+ 
+ delete from xs  where 学号 ='001501';
+    select * from xs ;
+    select * from cj;

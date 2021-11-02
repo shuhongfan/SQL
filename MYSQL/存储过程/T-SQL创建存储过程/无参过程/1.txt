@@ -1,0 +1,21 @@
+1.在cjgl数据库中创建一个名为rjxs的存储过程，功能是显示学生表xs中专业为“软件技术”的所有记录。
+
+ create procedure rjxs()
+ contains sql
+ select * from xs where 专业名='软件技术';
+ 
+
+2.调用以上存储过程。
+call  rjxs();或 call  rjxs;
+
+
+create function bb()
+ returns tinyint
+  begin 
+   declare n tinyint;
+  set n=(select * from xs where 专业名='软件技术') ;
+  return  n ;
+  end;
+
+
+select bb();

@@ -1,0 +1,23 @@
+全局变量在Mysql启动时由服务器自动将它们初始化为默认值，这些默认值可以通过my.ini文件来更改。 
+
+会话变量在每次建立一个新的连接的时候，由Mysql来初始化。Mysql会将当前所有的全局变量的值复制一份作为会话变量。
+
+全局变量和会话变量的区别在于：全局变量主要影响整个mysql实例的全局设置。大部分全局变量都是作为mysql的服务器调节参数存在。
+对全局变量的修改会影响到整个服务器，但是对会话变量的修改，只会影响到当前的会话，也就是当前的数据库连接。
+
+1.select @@version as '当前版本',current_date,current_user;  #某些特定的系统变量要省略@@
+
+2.显示系统变量清单
+ show global variables; #显示所有的全局变量
+  show  session  variables; #显示所有的会话变量
+  show variables like 'char%';#显示所有的会话字符变量
+
+3.修改系统变量的值
+    1).将全局系统变量sort_buffer_size的值改为250000。
+    select @@global.sort_buffer_size;
+    set @@global.sort_buffer_size=25000;
+
+    2).对于当前会话，把系统变量sql_select_limit的值设置为100。这个变量决定了select语句的结果集中的最大行数。
+      set @@session.sql_select_limit=100;
+      select @@global.sql_select_limit;
+   

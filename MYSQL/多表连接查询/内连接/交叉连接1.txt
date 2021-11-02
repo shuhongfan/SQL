@@ -1,0 +1,3 @@
+在学生成绩管理数据库cjgl中,列出学生所有可能的选课情况。
+select 学号,姓名,课程号,课程名  from xs,kc 
+或 select 学号,姓名,课程号,课程名  from xs cross join kc 

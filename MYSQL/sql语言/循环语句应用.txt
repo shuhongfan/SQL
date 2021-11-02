@@ -1,0 +1,80 @@
+1.求1至10之间数的和。
+  用函数实现：
+ CREATE FUNCTION qh()
+      RETURNS int  
+      begin
+        declare i int;
+         declare s int;
+         set i=0;
+         set s=0;
+       while i<=10 do
+         begin 
+            set s=s+i;
+             set i=i+1;
+         END;
+       end WHILE;
+      RETURN s;
+      end;
+
+SELECT qh();
+
+用过程实现：
+CREATE PROCEDURE qh5(  s int )
+     begin
+        declare i int;
+          set i=0;
+         set s=0;
+       while i<=10 do
+         begin 
+            set s=s+i;
+             set i=i+1;
+         END;
+       end WHILE;
+    end ;
+  
+call qh5(@x);
+  select @x; 
+
+
+2.在成绩管理数据库cjgl中，编程创建表test（含[序号]和[名称]两列）并对[序号]列输入值1~100。
+create table test 
+(序号 int not null,
+ 名称 varchar(20) null );
+
+CREATE PROCEDURE add_id()
+ begin
+declare n int;
+set n =1;
+while n <=100 do
+begin
+insert into test(序号)
+values(n);
+set n=n+1;
+end;
+end while;
+end;
+
+
+3.对课程表kc中的学分总和进行检查，若学分总和小于50，对每门课程学分加1，直到学分总和不小于50为止。
+
+create PROCEDURE add_xf()
+begin
+WHILE (SELECT sum(学分) FROM kc ) < 50 do 
+UPDATE kc 
+SET 学分= 学分+1;
+END WHILE;
+end;
+  
+call  add_xf();
+
+
+或: create PROCEDURE add_xf()
+ begin
+     REPEAT
+     UPDATE kc 
+     SET 学分= 学分+1;
+     until  (SELECT sum(学分) FROM kc ) >= 50 
+    END REPEAT;
+ end;
+  
+call  add_xf();

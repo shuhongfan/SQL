@@ -1,0 +1,13 @@
+1.创建存储过程：
+     使用T-SQL语句在cjgl数据库中创建一个名称为P_xsrs的存储过程，功能
+是根据给定的专业名称显示该专业的学生人数，并将该人数返回给用户。
+use cjgl
+
+create procedure p_xsrs( in zym varchar(30), out zyrs smallint)
+ 
+contains sql
+ set zyrs=(select COUNT(学号) from xs where 专业名 =zym);
+
+2.调用存储过程：
+ call P_xsrs('软件技术',@n);
+     select @n;

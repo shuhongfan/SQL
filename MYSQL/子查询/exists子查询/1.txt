@@ -1,0 +1,8 @@
+在学生成绩管理数据库cjgl中,查找所有选修了101号课程的学生姓名。
+
+select 姓名  from xs where exists (select * from cj where cj.学号=xs.学号 and 课程号='101')
+
+
+
+select if(exists(select * from xs where  姓名='李明
+'),'找到啦','没找到');

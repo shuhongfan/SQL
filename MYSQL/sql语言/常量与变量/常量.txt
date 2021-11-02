@@ -1,0 +1,19 @@
+1.字符串常量
+  select 'hello word';
+
+2.十进制整型、实型常量及十六进制常量
+
+   select 890,34.7, 0x89;
+
+3.日期常量
+  select '2018-5-3','2018/12/29';
+
+4.布尔常量
+  select true,false;
+
+5.NUll值
+  select null
+
+6.位字段值
+ select b'0',b'1';
+select b'111100';

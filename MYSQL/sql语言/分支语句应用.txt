@@ -1,0 +1,36 @@
+一、在学生表xs中查询某学生，如果存在此生，则将学生的信息输出；如果不存在此生，则输出数据库中没有该生信息。
+
+1.存储过程定义如下：
+
+CREATE PROCEDURE find_student(in student_name char(8))
+if exists(select * from xs where 姓名=student_name) then
+      select '数据库中有该生信息' as 查找结果;
+      select * from xs where 姓名=student_name;
+else
+      select '数据库中没有该生信息' as 查找结果;
+end if;
+
+
+2.存储过程调用如下：
+  call find_student('王金华');
+
+
+二、判断某门课成绩及格情况
+ 1.函数定义如下：
+create FUNCTION  bjgqk ( kcm varchar(20))
+RETURNS VARCHAR(10) 
+BEGIN
+DECLARE n int;
+DECLARE str VARCHAR(10);
+set n=(select count(*) from kc,cj where kc.课程号= cj.课程号 and 成绩<60);
+case 
+ when n>=10 then set  str= '不及格人数较多';
+ when n>=5 and n<10 then set str='不及格人数一般';
+ when n>=1 and n<5 then set str='不及格人数较少' ;
+ else
+ set str = '没有不及格的' ;
+end case;
+RETURN str;
+end
+2.函数调用如下:
+ SELECT bjgqk ('计算机基础')

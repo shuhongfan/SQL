@@ -1,0 +1,29 @@
+1.编写存储过程，统计课程号为101的成绩不及格的学生人数。
+
+ create procedure rs( )
+
+ select count(学号) as 人数   from cj  where 课程号='101' and 成绩<60;
+
+
+2.调用以上存储过程。
+ call rs;
+
+create function aa()
+ returns tinyint
+  begin 
+   declare n tinyint;
+  set n=(select count(学号) from cj  where 课程号='101' and 成绩<60) ;
+  return  n ;
+  end;
+
+select aa1();
+
+create function aa1(kch char(3))
+ returns tinyint
+  begin 
+   declare n tinyint;
+  set n=(select count(学号) from cj  where 课程号=kch and 成绩<60) ;
+  return  n ;
+  end;
+
+select aa1('101');

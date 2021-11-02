@@ -1,0 +1,9 @@
+1.查询cj表中每个学生获得的总学分(及格才有学分).
+  use cjgl
+   go
+  select 学号,sum(学分) from cj,kc where cj.课程号=kc.课程号 and 成绩>=60 group by 学号
+2.将第1题的查询结果更新到xs表。
+  use cjgl
+go
+update xs
+set 总学分=(select sum(学分) from cj,kc where cj.课程号=kc.课程号 and 成绩>=60  and cj.学号=xs.学号 group by 学号)

@@ -1,0 +1,4 @@
+1.在学生成绩管理数据库cjgl中,查找所有学生情况及他们选修的课程号，若学生未选修任何课，也要包括其情况。
+use cjgl
+go
+select xs.*,cj.课程号  from xs left outer join cj on xs.学号=cj.学号

@@ -1,0 +1,35 @@
+一、查询表中所有的列（用通配符*)
+1.在学生成绩管理数据库cjgl中,查询学生表xs中每位同学的情况。
+select * from xs;
+
+2.在学生成绩管理数据库cjgl中,查询课程表kc中每门课的情况。
+select * from kc;
+
+二、查询表中指定的列(用as可重新指定列名，as可省略）
+1.在学生成绩管理数据库cjgl中,查询学生表xs每位同学的姓名、性别、出生时间、专业。
+select 姓名,性别,出生日期 as 出生时间,专业名 as 专业 from xs ;
+  
+2.在学生成绩管理数据库cjgl中,查询课程表kc中每门课的课程名、学分。
+select 课程名,学分 from kc;
+
+三、查询经过计算的列
+ 1.在学生成绩管理数据库cjgl中,查询学生表xs中每位同学的学号、姓名、年龄。（用到year()、 CURDATE()或now()函数）
+select 学号,姓名,year(now())-year(出生日期) as 年龄 from xs ;
+
+ 2.在学生成绩管理数据库cjgl中，查询出学分对应的课程学时数（假设1学分计18学时）
+select 学分,学分*18 as 学时 from kc ;
+
+四、消除重复行
+ 1.在学生成绩管理数据库cjgl中，查询选修了课程的学生学号。
+select distinct 学号 from cj;
+
+ 2.在学生成绩管理数据库cjgl中，查询学生表xs中各专业名称。
+select distinct 专业名 from xs;
+
+五、限制返回行数
+1.在学生成绩管理数据库cjgl中，查询课程表kc中前3行记录。
+ select * from kc limit 3;
+
+2.在学生成绩管理数据库cjgl中，查询学生表xs中从第4个记录开始3行记录。(注意第一条记录位置是0）
+ select * from xs limit 3,3;
+

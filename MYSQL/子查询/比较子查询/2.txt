@@ -1,0 +1,25 @@
+
+
+一、查询其它专业中比软件技术专业学生年龄都小的学生。
+  
+select 学号,姓名 from xs where 专业名!='软件技术' and  year(CURDATE())-year(出生时间)<all ( select year(CURDATE())-year(出生时间) from xs WHERE 专业名='软件技术')
+
+
+
+
+二、在学生成绩管理数据库cjgl中,查找比所有软件技术专业学生年龄都大的学生。
+
+select * from xs  where 出生时间< all (select 出生时间 from xs where 专业名 ='软件技术')
+
+思考：
+1.查询年龄最大的学生是谁？
+select * from xs where 出生日期 <= all(select min(出生日期) from xs);
+      
+2.查询‘计算机基础’课成绩最高分的学生姓名。
+
+select * from xs where 学号 in(select 学号 from cj where 课程号='206' and 成绩 >= all(select 成绩 from cj where 课程号='206'));
+
+select * from xs where 学号 in(select 学号 from cj where 课程号=(select 课程号 from kc where 课程名='高等数学') and 成绩 >= all(select 成绩 from cj where 课程号=(select 课程号 from kc where        课程名='高等数学')));
+
+
+      

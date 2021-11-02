@@ -1,0 +1,11 @@
+1.使用T-SQL语句在cjgl数据库中创建一个名称为P_xsxx的存储过程
+，功能是根据给定的学号显示该学号学生的所有信息。
+use cjgl
+
+create procedure P_xsxx(in xh char(6))
+ contains sql
+ select * from xs where 学号=xh
+
+
+2.调用以上存储过程。
+ call  P_xsxx( '001101')

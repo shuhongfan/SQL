@@ -1,0 +1,3 @@
+要求：将程周杰的选课信息删除。
+
+delete from cj where 学号 in (select 学号 from xs where 姓名='程周杰');

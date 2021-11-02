@@ -1,0 +1,15 @@
+一、聚合函数
+1.从学生成绩管理数据库cjgl的学生表xs中，统计出专业个数。(count()计数函数)
+select count(distinct 专业名) as 专业个数 from xs;
+select count(学号) as 总人数 from xs;
+select count(*) as 总人数 from xs;
+
+2.从学生成绩管理数据库cjgl的学生表xs中，统计出总人数和男生人数。(count()计数函数)
+select count(学号) as 总人数 from xs;
+select 性别,count(学号) as 总人数 from xs group by 性别;
+
+3.在学生成绩管理数据库cjgl中，查询学号为‘001101’的学生的总分和平均分。(sum()求和函数，avg()求平均值函数）
+select sum(成绩) as 总成绩, avg(成绩) as 平均成绩 from cj where 学号='001101';
+
+4.在学生成绩管理数据库cjgl中，查询选修206课程的学生的最高分和最低分。（max()求最大值函数，min()求最小值函数）
+select max(成绩) as 最大值, min(成绩) as 最小值 from cj where 课程号='206';

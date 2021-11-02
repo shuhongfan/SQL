@@ -1,0 +1,5 @@
+在学生成绩管理数据库cjgl中，由学生表xs创建网络技术专业学生表wlxs,包括学号、姓名和性别。
+create table wlxs select 学号,姓名,性别    from xs where 专业名='网络技术'
+
+create table rjjs select * from xs where 专业名='
+软件技术';

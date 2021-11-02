@@ -1,0 +1,22 @@
+
+       为数据库cjgl创建一个实现简单查询功能的存储过程，在学生表xs中查找王元的信息。(分无参数和有参数两种情况)
+
+一、利用navicat工具创建存储过程并调用：
+
+二、用sql代码创建以上存储过程并调用：
+   
+    1.无参数情况：
+       先定义：
+       create procedure wy_pro1()
+      select * from xs where 姓名='王元';
+       
+      后调用：
+      call wy_pro1();
+     
+    2.参数情况：
+       先定义：
+       create PROCEDURE wy_pro2( in xm char(8))
+         select * from  xs  where 姓名=xm;
+       
+      后调用：
+      call wy_pro2('王元');

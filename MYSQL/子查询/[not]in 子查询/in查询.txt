@@ -1,0 +1,4 @@
+在学生成绩管理数据库cjgl中,查找选修了课程号为206的课程的学生的情况。
+use cjgl
+go
+select * from xs where 学号 in (select 学号 from cj where 课程号 ='206')

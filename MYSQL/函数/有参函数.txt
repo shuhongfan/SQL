@@ -1,0 +1,29 @@
+1.编写一函数，功能是根据学号得到此生年龄。
+
+函数定义：
+create function age(xh char(6))
+ returns tinyint
+ begin 
+ declare a tinyint;
+  select  year(curdate())-year(出生日期) into a  from xs where 学号=xh;
+     return a;
+ end;   
+
+
+函数调用：
+select age('001101');
+
+2.编写一个用户自定义函数zf，要求根据输入学号，返回该生总分。
+函数定义：
+create function zf(xh char(6))
+ returns smallint 
+begin 
+ DECLARE  n smallint ;
+ set n=(select sum(成绩) from cj where 学号=xh );
+return n;
+end
+
+函数调用：
+select zf('001101')
+
+

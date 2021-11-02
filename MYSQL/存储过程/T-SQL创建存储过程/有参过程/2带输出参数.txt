@@ -1,0 +1,10 @@
+1.创建存储过程，统计学生总人数
+ create procedure tjrs(out xsrs smallint)
+reads sql data
+select count(*) into xsrs from xs ;
+
+
+2.调用以上存储过程
+  call tjrs(@n);
+  select @n;
+  

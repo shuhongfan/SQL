@@ -1,0 +1,5 @@
+在学生成绩管理数据库cjgl中,查找未选修‘C程序设计’的学生的情况。
+
+select * from xs where 学号 not in 
+  (select 学号 from cj where 课程号 in 
+   ( select 课程号 from kc where 课程名 ='c程序设计'))

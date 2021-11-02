@@ -1,0 +1,13 @@
+请分别用from子句连接查询和ANSI查询实现以下查询：
+1.在学生成绩管理数据库cjgl中,查找每个学生的情况及选修的课程情况。
+  use cjgl 
+go
+select xs.* ,cj.*
+from xs,cj where xs.学号 =cj.学号
+
+use cjgl 
+go
+select xs.* ,cj.*
+from xs inner join cj  on xs.学号 =cj.学号
+ 
+(在命令窗口可以使用\G结尾，而不是分号结尾，按行垂直显示结果）

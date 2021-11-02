@@ -1,0 +1,21 @@
+1.在学生成绩管理数据库cjgl中，查询各专业的学生人数，要求显示专业名称和人数两列；查询每位学生的学号及选课的门数。
+   use cjgl
+    go
+   select  专业名,COUNT(*) as 人数 from xs group by 专业名 
+   select 学号,COUNT(*) as 门数  from cj  group by 学号
+2.在学生成绩管理数据库cjgl中，查询每位学生的总分和平均分，要求显示学号、总分、平均分。
+  select 学号,sum(成绩) AS 总分,AVG(成绩) as 平均分  from cj  group by 学号 
+3.在学生成绩管理数据库cjgl中，查询每门课的最高分和最低分，要求显示课程号、最高分、最低分。
+  select 课程号,MAX(成绩) as 最高分,MIN(成绩) as 最低分  from cj group by 课程号 
+
+4.在学生成绩管理数据库cjgl中，在课程表kc中查询开设课程在2门以上（含两门）的学期。
+select 开课学期,COUNT(课程名) from kc group by 开课学期;
+select 开课学期 ,COUNT(*) as 开课门数 from kc   group by 开课学期 having COUNT(*)>=2 ;
+select 开课学期,COUNT(课程名) as 课程数量 from kc group by 开课学期 having 课程数量>=2;
+
+5.在学生成绩管理数据库cjgl中，查询选课在3门以上且各门课均及格的学生的学号及其总分。
+  select 学号,SUM(成绩) as 总分 from cj  where  成绩>=60 group by 学号  having COUNT(*)>=3 
+
+select 学号,sum(成绩) as 总分 from cj where 成绩>=60 group by 学号 having count(课程号)>=3;
+
+select 学号,count(课程号) as 几门,sum(成绩) as 总分 from cj where 成绩>=60 group by 学号 having count(课程号)>=3;

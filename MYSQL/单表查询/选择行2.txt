@@ -1,0 +1,40 @@
+一、表达式比较
+1.在学生成绩管理数据库cjgl中，查询软件技术专业的学生情况。
+select * from xs where 专业名='软件技术';
+
+2.在学生成绩管理数据库cjgl中，查询软件技术专业男同学的情况。
+select * from xs where 专业名='软件技术' and 性别='男';
+
+3.在学生成绩管理数据库cjgl中，查询出年满27岁的学生信息。
+select 姓名,year(now())-year(出生日期) as 年龄  from xs where year(now())-year(出生日期)>=27;
+
+二、范围比较
+1.在学生成绩管理数据库cjgl中，查询1990年出生的学生情况。
+select 姓名,出生日期,year(出生日期) from xs where year(出生日期)='1990';
+
+2.在学生成绩管理数据库cjgl中，查询成绩表cj中成绩不在70--80之间的记录。
+select * from cj where 成绩 not between 70 and 80;
+
+三、确定集合
+1. 在学生成绩管理数据库cjgl中，查询选了课程号为“101”或“102”的同学学号。
+select 学号 from cj where 课程号 in('101','102');
+select * from cj where 课程号='101' or 课程号='102';
+
+2.在学生成绩管理数据库cjgl中，查询姓名为王元、王稼祥、程周杰的同学。
+select *from xs where 姓名 in('王元','王稼祥','程周杰');
+select * from xs where 姓名='王元' or 姓名='王稼祥' or 姓名='程周杰';
+
+四、模式匹配
+1.在学生成绩管理数据库cjgl中，查找所有王姓同学的学号和姓名；
+select 学号,姓名 from xs where 姓名 like '王%';
+
+2.查询姓名中第2个汉字是“长”的同学的学号和姓名。
+select 学号,姓名 from xs where 姓名 like '_长%';
+
+
+五、空值判断
+1.在学生成绩管理数据库cjgl中，查询没有考试成绩的学生的学号和相应的课程号。
+select 学号,课程号,成绩 from cj where 成绩 is null;
+
+2.在学生成绩管理数据库cjgl中，查询学生表xs中没有备注内容的学生学号、姓名。
+select 学号,姓名,备注 from xs where 备注 is null;
