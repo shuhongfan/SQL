@@ -1,0 +1,657 @@
+create database test on(
+    name=test_data,
+    filename='D:\Develop\sqlServer\test_data.mdf',
+    size=3,
+    maxsize=5,
+    filegrowth=1
+)
+log on(
+    name=test_data_log,
+    filename='D:\Develop\sqlServer\test_data_log',
+    size=1,
+    maxsize=2,
+    filegrowth=1
+    )
+go
+
+create table teacher(
+    ID int identity(1,1) not null ,
+    Name varchar(20) not null,
+    Sex Char(2) not null,
+    Phone varchar(20) not null,
+    Sallary smallmoney null,
+    Address varchar(100) null ,
+    Email varchar(30) null
+)
+go
+
+drop database test;
+go
+
+drop table teacher
+go
+
+alter database test modify name=test1110;
+go
+
+alter table teacher add price money default 23.8
+go
+
+alter table teacher drop column price
+go
+
+insert into teacher values(01,'王明','男','1980-1-1');
+go
+
+select * from teacher where ID=01
+go
+
+delete teacher where ID=1
+go
+
+update student set sex='女' where student_ID=1
+select * from student where student_ID=1
+go
+
+update BOOKS set ISREAD='true'
+select * from BOOKS
+go
+
+select book_name,price,price*0.8 as newprice from books
+go
+
+select top 10 * from hosts
+go
+
+select * from books where not price>40
+go
+
+select * from books where price<40 and price>20
+go
+
+select * from student where 姓名 like '高%'
+go
+
+select * from student where 姓名 like '[陈_高,肖_赵]%'
+go
+
+select * from books where price between 20 and 40
+go
+
+select * from books order by price desc
+go
+
+begin select stu_id from student
+goto skip
+select * from student
+skip:
+    print '的说法是函数'
+end
+
+
+declare @x int,@y int,@z int
+select @x=2,@y=5,@z=4
+if @x>@y
+    print 'x>y'
+else if @y>@z
+    print 'y>z'
+else
+    print 'z>y'
+
+select score,
+case
+when score>90 then '非常优秀'
+when score>80 then '优秀'
+when score>70 then '良好'
+when score>60 then '及格'
+else '不及格'
+end
+from score;
+
+declare @i int
+set @i = 5
+while @i>-1
+begin
+    print @i
+    set @i=@i-1
+    if @i=1 break
+end
+go
+
+
+create table S(
+    S# varchar(20) primary key,
+    SN varchar(50) not null,
+    SD varchar(50) not null,
+    SA int not null
+)
+
+create table C(
+    C# varchar(20) primary key,
+    CN varchar(50) not null
+)
+
+create table SC(
+    S# varchar(20) primary key ,
+    C# varchar(20) not null,
+    G float not null
+)
+go
+
+select S.S#,SN from S,C,SC where S.S#=SC.S# and C.C#=SC.C# and CN= '税收基础'
+go
+
+select S#,SN from S where S#=(select S# from SC where C# in(select C# from C where CN='税收基础'))
+go
+
+select SN,SD from S,SC where S.S#=SC.S# and C#='C2'
+go
+
+select distinct count(*) from SC group by S#
+go
+
+select SN,SD from S where S# in (
+    select S#
+    from SC,C
+    group by S#
+    having count(distinct S#) = (select count(*) from C)
+)
+go
+
+create database test1 on(
+    name='test',
+    filename='D:\Develop\sqlServer\test.mdf',
+    size=1024kb,
+    maxsize=unlimited,
+    filegrowth=10%
+    ) log on(
+        name='test_Log',
+        filename='D:\Develop\sqlServer\test.ldf',
+        size=1024kb,
+        maxsize=5120kb,
+        filegrowth=1024kb
+    )
+go
+
+alter database test
+add file(
+    name='test1',
+    filename='D:\Develop\sqlServer\test1.mdf',
+    size=5mb,
+    maxsize=5MB
+),
+(
+    name='test2',
+    filename='D:\Develop\sqlServer\test2.mdf',
+    size=3mb,
+    maxsize=10mb,
+    filegrowth=1mb
+)
+go
+
+alter database test
+add log file(
+    name=testlog,
+    filename='D:\Develop\sqlServer\testlog.ldf',
+    size=5mb,
+    maxsize=100mb,
+    filegrowth=5mb
+)
+go
+
+alter database test add filegroup test_group
+go
+
+alter database test add file(
+    name=test2,
+    filename='D:\Develop\sqlServer\resr.ndf',
+) to filegroup test_group
+go
+
+drop database test
+go
+
+backup database test to disk='D:\Develop\sqlServer'
+go
+
+create table yuanxi(
+    id int identity primary key ,
+    name varchar(10) not null unique,
+    miaoshu varchar(100)
+)
+create table xuesheng(
+    id int identity primary key,
+    name varchar(10) not null,
+    xuehao varchar(18) not null unique,
+    sex char(1) check(sex in('男','女')),
+    shengri smalldatetime check(shengri<='2000-1-1'),
+    dianhua varchar(30),
+    xiebieID int references yuanxi(id),
+    miaoshu varchar(100)
+)
+go
+
+alter table xuesheng add dizhi varchar(50) null ;
+go
+
+alter table xuesheng drop column dizhi
+go
+
+alter table xuesheng alter column dizhi varchar(100) null
+go
+
+drop table xuesheng
+go
+
+create rule mobile_phone_rule as @mobile_phone like '1[3,5][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'
+go
+
+create rule age_rule as @age between 12 and 45
+go
+
+create rule sex_rule as @sex in('男','女')
+go
+
+sp_bindrule mobile_phone_rule,'student.dianhua'
+go
+
+create database READBOOK on(
+    name=Readbook_dat,
+    filename='D:\readbook_dat.mdf',
+    size=2MB,
+    maxsize=10MB,
+    filegrowth=15%
+)
+    log on
+(
+    name=Readbook_log,
+    filename='D:\readbook_log.ldf',
+    size=1MB,
+    filegrowth=10%
+)
+go
+
+create table book(
+    bookid int not null primary key,
+    bookname varchar(40) not null,
+    publish varchar(60) null ,
+    pubdate datetime null default(getdate()),
+    price decimal(7,2) null ,
+    author varchar(60) null ,
+    remarks text null
+)
+go
+
+create rule price_rule as @price between 1 and 200;
+sp_bindrule price_rule,'book.price';
+sp_unbindrule price_rule,'book.price';
+go
+
+select ID,score,score*1.1 as new_score from score;
+go
+
+select 姓名=NAME,年龄=AGE from student;
+go
+
+select '姓名：',NAME as 姓名,'年龄：',AGE age 年龄 from student;
+go
+
+select top 5 ID,NAME,AGE from student;
+go
+
+select top 30 percent id,name,age from student;
+go
+
+declare @N int
+set @N=5
+select Top @n id,name,age from student
+go
+
+select * from student where age>24
+go
+
+select * from student where age>24 or name like '高%'
+go
+
+select * from student where not age=24;
+go
+
+select * from student where age between 24 and 26
+go
+
+select * from student where age in(23,25,26)
+go
+
+select * from student where age is null
+go
+
+select top 5 * from student order by age desc;
+go
+
+select top 5 * into new_stu from student
+select * from new_stu
+go
+
+select name,avg(age) as avg_age from student group by name;
+go
+
+select * from student where age<24 order by name
+
+
+
+create database xscj1;
+drop database xscj1;
+
+create database test2 on(
+    name=test2,
+    filename='D:\test1.mdf',
+    size=5MB,
+    maxsize=50MB,
+    filegrowth=10%
+)
+log on
+(
+    name=test2_log,
+    filename='D:\test2_log.ldf',
+    size=2MB,
+    maxsize=5mb,
+    filegrowth=1mb
+);
+
+create database test3 on
+primary
+(
+    name=test3_data1,
+    filename='D:\test3_data1.mdf',
+    size=20mb,
+    maxsize=unlimited,
+    filegrowth=10%
+),
+(
+    name=test3_data2,
+    filename='D:\test3_data2.ndf',
+    size=20mb,
+    maxsize=unlimited,
+    filegrowth=10%
+)
+log on
+(
+    name=test3_log,
+    filename='D:\test3_log.ldf',
+    size=50mb,
+    maxsize=100mb,
+    filegrowth=10%
+);
+
+
+create database test4
+on primary
+(
+    name='test4_data1',
+    filename='D:\test4_data1.mdf',
+    size=20mb,
+    maxsize=60mb,
+    filegrowth=5mb
+),filegroup test4Group1
+(
+    name='test4_data2',
+    filename='D:\test4_data2.ndf',
+    size=10mb,
+    maxsize=unlimited,
+    filegrowth=10%
+);
+
+
+alter database test1 modify file(
+    name='test1_data',
+    maxsize=unlimited,
+    filegrowth=20%
+);
+
+alter database test1 add file(
+    name='test1bak',
+    filename='D:\test1bak.ndf',
+    size=50mb,
+    maxsize=unlimited,
+    filegrowth=5%
+    );
+
+alter database test1 remove file test1bak;
+
+alter database test1 add filegroup fgroup;
+
+alter database test1 add file(
+    name='test1_data2',
+    filename='D:\test1_Data2.ndf',
+    size=10mb,
+    maxsize=unlimited
+    ),(
+        name='test1_data2',
+        filename='D:\test1_data2.ndf',
+        size=10mb,
+        maxsize=unlimited
+    ) to filegroup fgroup;
+
+alter database test1 remove file test1_data2;
+alter database test1 remove file test1_data3;
+alter database test1 remove filegroup fgroup;
+
+drop database test1;
+
+create database xscj1;
+use xscj1;
+
+create table xsb(
+    学号 char(6) not null primary key,
+    姓名 char(8) not null,
+    性别 bit not null default 1,
+    出生时间 date null,
+    专业 char(12) null default '计算机',
+    总学分 int null default 0,
+    备注 varchar(500) null ,
+    年龄 as 2015-year(出生时间) persisted
+);
+
+-- 复制表的结构 不复制数据
+select * into xsb1 from xsb;
+
+alter table xsb1 add 入学时间 date;
+
+alter table xsb1 alter column 姓名 char(10);
+
+alter table xsb1 alter column 入学时间 smalldatetime;
+
+alter table xsb1 drop column 入学时间,年龄;
+
+drop table xsb1;
+
+insert into xsb1 values('231301','王一平',1,'1990-02-10','管理工程',50,null);
+insert into xsb1(学号,姓名,出生时间,专业,总学分) values('191301','王琳','1990-02-10','管理工程',50);
+
+insert into xsb1 values ('201301','王海',1,'1991-05-10','软件工程',50,null),('201302','李娜',0,'1991-04-12','软件工程',52,null);
+
+update xsb1 set 备注='校外互认学分课程',总学分=总学分+3 where 学号='231301';
+
+delete from xsb1 where 专业='软件工程';
+
+-- 删除表中所有记录
+truncate table xsb1;
+
+select * from xsb;
+
+select 学号,姓名,总学分 from xsb where 专业='计算机';
+
+select 学号 as number,姓名 as name,总学分 as mark from xsb1 where 专业='计算机';
+select 'student number'=学号,'student name'=姓名,mark=总学分 from xsb where 专业='计算机';
+
+
+select 学号,姓名,等级=
+case
+    when 总学分 is null then '尚未选课'
+    when 总学分 < 50 then '不及格'
+    when 总学分 >=50 and 总学分 <=52 then '合格'
+    else '优秀'
+end
+from xsb where 专业='计算机';
+
+select 学号,姓名,出生时间,year(getdate())-year(出生时间) as 年龄 from xsb where 专业='通信工程';
+
+select distinct 专业 from xsb;
+
+select top 10 姓名,专业,总学分 from xsb;
+
+select sum(学分) as '总学分' from kcb;
+select avg(成绩) as '计算机基础平均成绩' from cjb where 课程号='101'
+
+select max(成绩) as '计算机基础最高分',min(成绩) as '计算机基础最低分' from cjb where 课程表='101';
+
+select * from xsb where 专业='通信工程' and 总学分>=42;
+
+select * from xsb where 姓名 like '王_';
+
+select 姓名,专业 from xsb where 学号 like '%9___[^1-5]';
+
+select 学号,姓名,专业,出生时间 from xsb where 出生时间 not between '1995-1-1' and '1995-12-31';
+
+select 学号,姓名,专业,出生时间 from xsb where year(出生时间)!=1995;
+
+select * from xsb where 专业 in ('软件工程','通信工程');
+
+select * from xsb where 专业='计算机' or 专业='通信工程';
+
+select * from xsb where 总学分 is null;
+
+select * from xsb where 学号 in(
+    select 学号 from cjb where 课程号='206'
+    );
+
+select 学号,姓名 from xsb where 学号 not in(
+    select 学号 from cjb where 课程号 in(
+        select distinct 课程号 from kcb where 课程名='离散数学')
+);
+
+select 学号,姓名 from xsb,kcb where xsb.学号=kcb.学号 and 课程号 =(select distinct 课程号 from kcb where 课程名='离散数学');
+
+select * from xsb where 出生时间 < all(select 出生时间 from xsb where 专业='计算机');
+
+-- 查询206课程号成绩不低于101课程号最低成绩的学生学号
+select * from cjb where 课程号='206' and 成绩 !<any (
+    select 成绩 from cjb where '课程号'='101'
+    );
+
+-- 查询选修206课程的学生姓名
+select 姓名 from xsb where exists(
+    select * from cjb where 学号=xsb.学号 and 课程号='206'
+                             );
+
+select 姓名 from xsb where not exists(
+    select * from kcb where not exists(
+        select * from sjb where 学号=xsb.学号 and 课程号=kcb.课程号
+        )
+    )
+
+select 成绩 from cjb,kcb where cjb.课程=kcb.课程号 and 学号='191301' and 课程名='计算机基础'
+
+
+select 姓名,学号,总学分 from(
+                     select 姓名,学号,性别,总学分 from xsb where 总学分>=50
+                         ) as student where 性别=1;
+
+select xsb.*,cjb.课程号,cjb.成绩 from xsb,cjb where xsb.学号=cjb.学号;
+
+select 姓名,成绩 from xsb,cjb where xsb.学号=cjb.学号 and 课程表='206' and 成绩 >=80;
+
+select xsb.学号,姓名,课程名,成绩 from xsb,kcb,cjb where xsb.学号=cjb.学号 and kcb.课程名=cjb.课程号 and 课程名='计算机基础' and 成绩>=80;
+
+select 学号,姓名,成绩名,成绩 from xsb,kcb,cjb where xsb.学号=cjb.学号 and kcb.课程号=cjb.课程号 and 课程名='计算机基础' and 成绩>=80;
+
+select * from xsb inner join cjb on xsb.学号=cjb.学号;
+
+select 姓名,成绩 from xsb join cjb on xsb.学号=cjb.学号 where 课程号='206' and 成绩>=80;
+
+select xsb.学号,姓名,课程名,成绩 from xsb,kcb,cjb where xsb.学号=cjb.学号
+and kcb.课程号=cjb.课程号
+and 课程名='计算机基础'
+and 成绩>80;
+
+select * from xsb inner join cjb on xsb.学号=cjb.学号 where 课程号='206' and 成绩>=80;
+
+select xsb.学号,姓名,课程名,成绩 from xsb join cjb join kcb
+on cjb.课程号=kcb.课程号
+on xsb.学号=cjb.学号
+where 课程名='计算机基础' and 成绩>=80;
+
+-- 查询不同课程成绩相同的学业上学号、课程号和成绩
+select a.学号,a.课程号,b.课程号,a.成绩 from cjb a inner join cjb b where a.成绩=b.成绩 and a.学号=b.学号 and a.课程号!=b.课程号；
+
+select xsb.*,课程号 from xsb left outer join cjb on xsb.学号=cjb.学号;
+
+-- 列出学生所有可能的选课情况
+select 学号,姓名,课程号,课程名 from xsb cross join kcb;
+
+select 专业,性别,count(*) as '人数' from xsb group by rollup(专业,性别);
+
+select 专业,性别,count(*) as '人数' from xsb group by 专业,性别;
+
+select 学号,avg(成绩) 平均成绩 from cjb having avg(成绩)>=85;
+
+select 学号 from cjb where 成绩>=80 group by 学号 having count(*)>2;
+
+select 学号,姓名 into 计算机学生 from xsb where 专业='计算机';
+
+select * from 计算机学生 where 学号='191301'
+union all
+select * from 通信工程学生 where 学号='221301';
+
+select * from xsb where 专业='计算机'
+except
+select * from xsb where 性别=1;
+
+select * from xsb where 总学分>42
+intersect
+select * from xsb where 性别=1;
+
+create view ccj_avg as
+select xsb.学号,课程号,成绩 from xsb,cjb where xsb.学号=cjb.学号 and 专业='计算机';
+
+select * from ccj_avg;
+select * from ccj_avg where score_avg>=75;
+drop view ccj_avg;
+
+declare xs_cur1 cursor for
+ select 学号,姓名,性别,出生日期,总学分 from xsb where 专业='计算机'
+for read only;
+
+declare xs_cur2 cursor
+dynamic for
+select 学号,姓名,总学分 from xsb where 专业='计算机' for update of 总学分;
+
+declare xs_cur3 cursor
+local scroll scroll_locks for
+select 学号,姓名,总学分 from xsb
+for update of 总学分;
+open xs_cur3;
+select '游标xs_cur3数据行数'=@@CURSOR_ROWS;
+
+declare xs_cur4 cursor for
+select 学号,姓名,性别,出生日期,总学分 from xsb where 专业='计算机'
+for read only;
+open xs_cur4;
+fetch next from xs_cur4;
+fetch next from xs_cur4;
+
+declare xs_cur5 cursor
+dynamic for
+select 学号,姓名,总学分 from xsb where 专业='计算机'
+for update of 总学分;
+open xs_cur5;
+fetch next from xs_cur5;
+fetch next from xs_cur5;
+fetch relative 2 from xs_cur5;
+fetch prior from xs_cur5;
+fetch relative -3 from xs_cur5;
+select '执行情况'=@@FETCH_STATUS
+fetch first from xs_cur5
+close xs_cur5
+
+deallocate xs_cur5;
