@@ -1,3 +1,363 @@
+### 数据库期中考试题型及样题
+
+```sql
+一、选择题：
+1．下列SQL关键字中用于修改表结构的是(  A  )。
+A．ALTER		B、CREATE		C、UPDATE		D、INSERT   
+
+2．SQL中创建视图应使用(  C  )语句。
+    A．CREATE SCHEMA	B、CREATE TABLE	C、CREATE VIEW  D、CREATE DATABASE     
+
+3. SELECT语句执行的结果是(  B  )。
+A．数据项        B．元组       C．表        D．视图
+
+二、判断题
+1. 一条UPDATE中只能使用一个表。  ×
+2. 当通过视图修改数据成功时，实际上对应基本表的数据也修改成功.  √
+
+三、 程序阅读题
+1. select departmentId, count（*） from  Employee group by  departmentId
+查出员工的部门号和人数，按部门号分组
+
+2. Declare  cur_Stu cursor for  select * from Student where birthdate>'2001-1-1'
+创建游标cur_Stu，查询在'2001-1-1'出生的学生信息
+
+四、设计题
+1. 设某图书管理系统中有2个实体集，
+一是“读者”实体集，属性有读者编号、读者姓名、性别、以及年龄；
+二是“图书”实体集，属性有图书编号、图书名称、价格、价格以及入库时间；
+一个读者可以借阅多本图书，一本图书也可以为多个读者借阅，请画出对应的E-R图。
+
+
+2. 写出如下关系模式的建表语句
+（1）学生（学号，姓名，性别，年龄，专业）
+（2）课程（课程号，课程名，学时，学分）
+（3）选课（学号，课程号，成绩）
+create table 学生(
+    学号 int primary key,
+    姓名 varchar(50),
+    性别 int,
+    年龄 int,
+    专业 varchar(50)
+);
+
+create table 课程(
+    课程号 int primary key,
+    课程名 varchar(50),
+    学时 int,
+    学分 int
+);
+
+create table 选课(
+    学号 int primary key ,
+    课程号 int,
+    成绩 float
+);
+
+3. 针对上面三个表，写出下面操作对应的SQL语句
+（1）查询年龄为20岁的学生信息
+select * from 学生 where 年龄=20;
+
+（2）统计各专业的学生人数
+select 专业,count(*) from 学生 group by 专业;
+
+（3）查询数据库课程学生的成绩，列出学号、姓名、性别、成绩
+select 学号,姓名,性别,成绩 from 学生,选课,课程 where 学生.学号=选课.学号 and 选课.课程号=课程.课程号 and 课程名='数据库'
+
+（4）删除没有选课的学生
+delete from 学生 where 学号 not in(select distinct 学号 from 选课);
+
+（5）将男生的年龄增加1岁
+update 学生 set 年龄=年龄+1 where 性别='男';
+
+（6）设置学号为200201的学生选修004号课程
+insert into 选课(学号,课程号) values('200201',004);
+
+（7）创建的“计算机”专业的学生视图，列名为：学号、姓名、性别、年龄
+create view 计算机专业 as
+select 学号,姓名,性别,年龄 from 学生 where 专业='计算机';
+```
+
+![1636820710343](D:\DEMO\SQL\sqlServer\sqlServer.assets\1636820710343.png)
+
+### 数据库复习资料
+
+```sql
+-- 针对员工管理数据库中的下面的三个表：
+-- Employee(EmployeeID, EmpName, sex, birthdate, DeptId) //员工(员工ID，姓名，性别，部门ID)
+-- Department(DeptId, DepartmentName,Tel) //部门(部门ID，部门名称，电话)
+-- Salary(SalId, EmployeeID, year, month, income, outcome)// 工资Id，员工Id，年，月份，收入，扣减)
+
+-- 1. 请写出下面的语句的功能：
+select EmpName from Employee where sex =1 and birthdate>= '2000-1-1'
+-- 从员工表中查询出性别为1并且生日大于‘2000-1-1’员工姓名
+
+select sex, count(*) from  Employee group by  sex
+-- 从员工表中通过性别分组，分别查询男和女的人数
+
+select EmployeeID, EmpName, sex, DepartmentName
+    from Employee E inner join Department D
+        on E.DeptID =D.DeptID
+        where EmpName like  '%国%'
+-- 查询员工姓名中含有‘国’的员工ID、姓名、性别、部门名称
+
+select EmployeeID, EmpName
+from Employee
+where EmployeeID in (
+    select EmployeeID from Salary
+        where income – outcome >10000
+    )
+-- 查询 实际收入(收入-扣减) 大于10000 的员工ID、姓名
+
+
+-- 3. 下面是学生成绩数据库中的下面的三个关系模式（表），其含义见右侧的汉字说明。
+-- Student(sno, sname, sex, age, major)  //学生（学号，姓名，性别，年龄，所在专业）
+-- Course(cno, cname, credit, term, hours) //课程（课程号，课程名，学分，学期，学时）
+-- SC(sno, cno, grade)   //选课(学号，课程号，成绩)
+-- 请写出下面的操作（应用需求）对应的语句：
+
+-- (2) 查询“计算机”专业男生的学号和姓名
+select sno,sname from Student where major='计算机'
+
+-- (3) 查询第1学期所上的所有课程的总学时
+select sum(学时) from Course where term=1
+
+-- (4)查询“数据库”课程的学生成绩，列出学号、姓名、所在专业、成绩，按成绩降序、学号升序排列；
+select Student.sno,sname,major,grade
+from Student,SC
+where Student.sno=SC.sno
+order by grade desc,Student.sno asc
+
+-- (5) 查询成绩不及格的学生学号和姓名；
+select sno,sname from Student where sno in(
+    select sno from SC where grade<60
+)
+
+-- (6)查询“数据库”课程的选课人数、最高分、最低分、平均分；
+select count(sno) 选课人数,max(grade) 最高分,min(grade) 最低分,avg(isnull(grade,0)) 平均分 from SC where cno in(
+    select cno from Course where cname='数据库'
+)
+
+-- (7) 设置学号为21001的学生选修课程号为BX001的课程——考查添加记录
+insert into SC(sno, cno) values('21001','BX001');
+
+-- (8) 将原学时数在4以上的课程的学时增加1。
+alter table Course set hours=hours+1 where hours>4;
+
+-- (9) 删除成绩为空的选课记录。
+delete from SC where grade is null
+
+-- (10)将有成绩在90分以上的学生的学号、姓名建立视图V_ExcelStu。
+create view V_ExcelStu as
+    select sno, sname from Student where sno in(
+        select distinct sno from SC where grade>90
+        )
+        
+create table 图书(
+    书号 char(20) primary key,
+    书名 varchar(40) not null,
+    出版年份 int,
+    印刷数量 int,
+    单价 int
+);
+create table 作者(
+    作者号 char(20) primary key,
+    作者名 varchar(40) not null,
+    职称 char(4) check(职称 in('高级','中级'))
+);
+create table 出版(
+    书号 char(20) references 图书(书号),
+    作者号 char(20) references 作者(作者号),
+    作者序号 tinyint,
+    primary key (书号,作者号)
+);
+
+select 书名,单价 from 图书 where 出版年份=2014;
+
+select sum(印刷数量) from 图书,作者,出版
+where 图书.书号=出版.书号 and 作者.作者号=出版.作者号 and 职称='高级';
+
+update 图书 set 单价=单价*0.9 where 出版年份<2012;
+
+insert into 作者 values ('z100','新作者',null);
+
+create view V1 as
+    select 书名,出版年份,印刷数量 from 图书 where 印刷数量>5000;
+
+
+
+
+create table 教师(
+    教师号 char(10) primary key ,
+    教师名 varchar(20) not null ,
+    所在部门 varchar(30),
+    职称 char(6) check(职称 in ('教授','副教授','其他'))
+)
+create table 课程(
+    课程号 char(20) primary key ,
+    课程名 varchar(40) not null ,
+    学时数 tinyint,
+    开课学期 tinyint
+)
+create table 授课(
+    教师号 char(10),
+    课程号 char(20),
+    授课时数 int,
+    授课年份 int,
+    primary key (教师号,课程号,授课年份),
+    foreign key(教师号) references 教师(教师号),
+    foreign key(课程号) references 课程(课程号)
+)
+
+select 教师名,所在部门 from 教师 where 职称='教授'
+
+select 开课学期,count(*) 课程门数 from 课程 where 学时数>40 group by 开课学期;
+
+select 课程名,学时数,教师名,授课时数
+from 课程
+    join 授课 on 课程.课程号 = 授课.课程号
+    join 教师 on 授课.教师号 = 教师.教师号
+where 授课年份=2012;
+
+delete from 课程 where 课程号 not in(
+    select 课程号 from 授课
+    )
+
+create view V2 as
+    select 教师名,课程名,授课时数
+    from 授课
+    join 教师 on 授课.教师号=教师.教师号
+    join 课程 on 授课.课程号 = 课程.课程号
+    where 授课年份=2014
+
+
+
+create table 汽车(
+    汽车型号 char(20) primary key ,
+    汽车类别 char(6) check(汽车类别 in('小轿车','商务车')),
+    生产年份 int
+);
+create table 经销商(
+    经销商号 char(20) primary key ,
+    经销商名 varchar(40) not null ,
+    地址 varchar(50)
+);
+create table 销售(
+    经销商号 char(20),
+    汽车型号 char(20),
+    销售时间 datetime,
+    销售价格 int,
+    primary key(经销商号,汽车型号,销售时间),
+    foreign key (经销商号) references 经销商(经销商号),
+    foreign key (汽车型号) references 汽车(汽车型号)
+);
+
+select 汽车型号,汽车类别 from 汽车 where 生产年份=2014;
+
+select count(*) 销售总数量 from 销售 where 销售价格 >= 300000;
+
+update 销售 set 销售价格=销售价格-50000 where 销售价格>500000;
+
+insert into 汽车 values ('Q100','小轿车',2014);
+
+create view V3 as
+    select 经销商名,地址 from 经销商
+    join 销售 on 经销商.经销商号 = 销售.经销商号
+    join 汽车 on 汽车.汽车型号 = 销售.汽车型号
+where 汽车类别='小轿车'
+```
+
+
+
+### 视图
+
+```sql
+-- 视图是一张虚拟表，他所存储的不是实际数据，而是查询语句，但我们可以对视图进行像数据表一样的操作
+-- 视图创建
+create view vm_city
+as
+select cityName from city;
+
+-- 视图查询
+select * from vm_city;
+
+```
+
+
+
+### 游标
+
+```sql
+-- 定义游标
+declare orderNum_02_cursor cursor scroll for select OrderId from bigorder where orderNum='ZEORD003402';
+
+-- 打开游标
+open orderNum_02_cursor;
+
+-- 提取数据
+-- 第一行
+fetch first from orderNum_02_cursor;
+
+-- 最后一行
+fetch last from orderNum_02_cursor;
+
+-- 相对 从当前位置数 到n行
+fetch relative 3 from orderNum_02_cursor;
+
+-- 绝对 从游标的第一行开始数 到n行
+fetch absolute 3 from orderNum_02_cursor;
+
+-- 当前位置的下一行
+fetch next from orderNum_02_cursor;
+
+-- 当前位置的上一行
+fetch prior from orderNum_02_cursor;
+
+
+-- 提前数据赋值给变量
+declare @OrderId int;
+fetch absolute 3 from orderNum_02_cursor into @OrderId;
+
+-- 通过检测全局变量@@Fetch_Status的值，获得提取状态信息
+-- 0，Fetch语句成功。
+-- -1：Fetch语句失败或行不在结果集中。
+-- -2：提取的行不存在
+declare @OrderId int;
+fetch absolute 3 from orderNum_02_cursor into @OrderId;
+while @@FETCH_STATUS=0 -- 提取成功，进行下一条数据的提取操作
+    select @OrderId as id  fetch next from orderNum_02_cursor into @OrderId;
+
+
+-- 利用游标更新删除数据
+-- 1.声明游标
+declare orderNum_03_cursor cursor scroll
+for select OrderId,userId from bigorder where orderNum='ZEORD003402';
+
+-- 2.打开游标
+open orderNum_03_cursor;
+
+-- 3.声明游标提取数据所要存放的变量
+declare @OrderId int,@userId varchar(15);
+
+-- 4.定位游标到哪一行
+fetch first from orderNum_03_cursor into @OrderId,@userId
+while @@FETCH_STATUS=0
+    if @OrderId=122182
+        update bigorder set UserId='123' where Current of orderNum_03_cursor; -- 5.修改
+    if @OrderId=154074
+        delete bigorder where current of orderNum_03_cursor; -- 5.删除当前行
+    fetch next from orderNum_03_cursor into @OrderId,@userId; -- 移动游标
+
+-- 6. 关闭游标
+close orderNum_03_cursor;
+
+-- 7.删除游标
+deallocate orderNum_03_cursor;
+```
+
+### 课本习题
+
+```sql
 create database test on(
     name=test_data,
     filename='D:\Develop\sqlServer\test_data.mdf',
@@ -655,3 +1015,5 @@ fetch first from xs_cur5
 close xs_cur5
 
 deallocate xs_cur5;
+```
+
