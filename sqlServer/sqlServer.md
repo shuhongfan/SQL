@@ -78,7 +78,7 @@ create view 计算机专业 as
 select 学号,姓名,性别,年龄 from 学生 where 专业='计算机';
 ```
 
-![](https://raw.githubusercontent.com/shuhongfan/Typora/main/img/202111141405331.png)
+![image-20211114142642045](https://cdn.jsdelivr.net/gh/shuhongfan/Typora@main/img/202111141426138.png)
 
 ### 数据库复习资料
 
